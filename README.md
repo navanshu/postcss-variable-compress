@@ -7,35 +7,24 @@
 
 ```css
 :root {
---first-color: #16f;
---second-color: #ff7;
+  --first-color: #16f;
+  --second-color: #ff7;
 }
 
 #firstParagraph {
   background-color: var(--first-color);
   color: var(--second-color);
-}
-
-#secondParagraph {
-  background-color: var(--second-color);
-  color: var(--first-color);
 }
 
 #container {
   --first-color: #290;
 }
-
-.thirdParagraph {
-  background-color: var(--first-color);
-  color: var(--second-color);
-}
 ```
 
 ```css
 :root {
---0: #16f;
---1: #ff7;
---2: #000;
+  --0: #16f;
+  --1: #ff7;
 }
 
 #firstParagraph {
@@ -43,18 +32,8 @@
   color: var(--1);
 }
 
-#secondParagraph {
-  background-color: var(--1);
-  color: var(--0);
-}
-
 #container {
   --0: #290;
-}
-
-.thirdParagraph {
-  background-color: var(--0);
-  color: var(--1);
 }
 ```
 
