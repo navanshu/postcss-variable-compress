@@ -1,6 +1,6 @@
 # PostCSS Variable Compress
 
-[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. It can safely convert for css variable fallback cases as well. It replaces css variables via a counter and converts that counter into base 36 string as javascript inherent implementation is limited to this but beyond such no one would notice a difference as right now even if you have 1295 css variables they will not exceed two characters.
+[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. It can safely convert for css variable fallback cases as well. It replaces css variables via a counter and converts that counter into base 36 string as javascript inherent implementation is limited to this but beyond such no one would notice a difference as right now even if you have 1295 css variables they will not exceed two characters. It will transform any css variable it encounters without breaking your stylesheet. If you want it doesn't modify some css variables pass them as an array
 
 [PostCSS]: https://github.com/postcss/postcss
 [postcss-variable-compress]: https://github.com/navanshu/postcss-variable-compress
@@ -81,6 +81,33 @@ module.exports = {
     require('cssnano'),
 +   require('postcss-variable-compress')
   ]
+}
+```
+
+**Step 4:** Pass configuration to the plugin. It takes an array of css variables that you don't need to transform:
+
+```diff
+module.export = {
+  plugins: [
+    require('cssnano'),
++   require('./postcss/compress')([
++       '--colorPre',
++       '--colorPreAlpha',
++       '--colorPrimary',
++       '--colorPrimaryAlpha',
++       '--colorPost',
++       '--colorPostAlpha',
++       '--light',
++       '--dark',
++       '--lightAlpha',
++       '--darkAlpha',
++       '--lighterAlpha',
++       '--darkerAlpha',
++       '--font',
++       '--vh',
++       '--r'
++   ])
+  ]  
 }
 ```
 
