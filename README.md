@@ -90,19 +90,11 @@ module.exports = {
 module.export = {
   plugins: [
     require('cssnano'),
-+   require('./postcss/compress')([
-+       '--colorPre',
-+       '--colorPreAlpha',
++   require('postcss-variable-compress')([
 +       '--colorPrimary',
 +       '--colorPrimaryAlpha',
-+       '--colorPost',
-+       '--colorPostAlpha',
 +       '--light',
 +       '--dark',
-+       '--lightAlpha',
-+       '--darkAlpha',
-+       '--lighterAlpha',
-+       '--darkerAlpha',
 +       '--font',
 +       '--vh',
 +       '--r'
