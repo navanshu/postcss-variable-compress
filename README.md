@@ -1,8 +1,10 @@
 # PostCSS Variable Compress
 
-[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. It can safely convert for css variable fallback cases as well. It replaces css variables via a counter and converts that counter into base 36 string as javascript inherent implementation is limited to this but beyond such no one would notice a difference as right now even if you have 1295 css variables they will not exceed two characters. It will transform any css variable it encounters without breaking your stylesheet. If you want it doesn't modify some css variables pass them as an array
+[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. Even if you have 1295 css variables still they will not exceed by two characters. It will transform css variable without breaking your stylesheet.
 
-[PostCSS]: https://github.com/postcss/postcss
+If you want it not modify some css variables, then pass them `--{variable-name}` as an array to the plugin.
+
+[postcss]: https://github.com/postcss/postcss
 [postcss-variable-compress]: https://github.com/navanshu/postcss-variable-compress
 
 ```css
@@ -63,7 +65,7 @@ module.exports = {
 }
 ```
 
-**Step 4:** Pass configuration to the plugin. It takes an array of css variables that you don't need to transform:
+**Step 4:** Pass configuration to the plugin. It takes an array of css variables that you don't need to transform.
 
 ```diff
 module.export = {
@@ -78,7 +80,7 @@ module.export = {
 +       '--vh',
 +       '--r'
 +   ])
-  ]  
+  ]
 }
 ```
 

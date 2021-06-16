@@ -2,7 +2,7 @@ const postcss = require('postcss');
 
 const plugin = require('./index');
 
-async function run (input, output, opts = {}) {
+async function run (input, output, opts = []) {
   let result = await postcss([plugin(opts)]).process(input, { from: undefined });
   expect(result.css).toEqual(output);
   expect(result.warnings()).toHaveLength(0);
@@ -72,4 +72,9 @@ it('Shorten css variables', async () => {
       '--2'
     ]
   );
+});
+
+it('Support reloading. Now the plugin will reset mapped variables', async () => {
+  await run(`:root{--first-color: #16f;--second-color: #ff7;}`, `:root{--0: #16f;--1: #ff7;}`, []);
+  await run(`:root{--second-color: #ff7;--first-color: #16f;}`, `:root{--0: #ff7;--1: #16f;}`, []);
 });
