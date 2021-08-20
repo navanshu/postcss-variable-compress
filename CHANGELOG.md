@@ -1,5 +1,9 @@
 # Change Log
 
+# v0.2.0
+
+- Same api can be passed with function so you can check if a variable has to be ignored
+
 # v0.1.3
 
 - Fixed the scoping issue in the variable
