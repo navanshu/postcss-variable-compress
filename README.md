@@ -74,13 +74,15 @@ module.exports = {
     require('cssnano'),
     require('postcss-variable-compress')(
       // pass in css variables to avoid
-      'colorPrimary', 'colorPrimaryAlpha', 'light', 'dark', 'font', 'vh', 'r'
+      'light', 'dark', 'font', 'vh', 'r' // unprefixed
+      // or
+      '--height', '--font' // prefixed
       // or pass in as many function as your want
       // they take single param which is a the name of css variable
       // you can do checks on it and
       // return true if you want it to be skipped
       // for example
-      (name) => name.includes('skip') // name is a raw css variable i.e. it includes "--" example --height
+      (name) => name.includes('skip') // name prefixed css variable example --height
       // avoid regex if you can they are bad
     )
   ]
