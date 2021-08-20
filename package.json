@@ -11,7 +11,8 @@
     "cssnano"
   ],
   "scripts": {
-    "test": "jest --coverage && eslint ."
+    "test": "jest --coverage && eslint .",
+    "tsc": "tsc --project tsconfig.json --watch"
   },
   "author": "Navanshu Rastogi <navanshu.rastogi@gmail.com>",
   "license": "MIT",
@@ -29,7 +30,8 @@
     "jest": "^26.6.3",
     "lint-staged": "^10.5.4",
     "postcss": "^8.2.8",
-    "simple-git-hooks": "^2.0.2"
+    "simple-git-hooks": "^2.0.2",
+    "typescript": "^4.3.5"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

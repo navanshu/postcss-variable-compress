@@ -1,11 +1,15 @@
 const postcss = require('postcss');
 
-const plugin = require('./index');
+const variableCompress = require('./index');
 
-async function run (input, output, opts = []) {
-  let result = await postcss([plugin(opts)]).process(input, { from: undefined });
+async function run (input, output, opts) {
+  let result = await postcss(
+    [variableCompress(opts)]
+  ).process(input, { from: undefined });
+
   expect(result.css).toEqual(output);
   expect(result.warnings()).toHaveLength(0);
+
 }
 
 
@@ -38,6 +42,10 @@ it('Shorten css variables', async () => {
 
 .section-title {
   color: var(--primary-color, var(--black, #222));
+}
+
+code {
+  --5: #555;
 }`,
     `:root {
 --0: #16f;
@@ -66,10 +74,16 @@ it('Shorten css variables', async () => {
 
 .section-title {
   color: var(--primary-color, var(--3, #222));
+}
+
+code {
+  --5: #555;
 }`,
     [
       '--primary-color',
-      '--2'
+      '--2',
+      (e) => e.includes('special'),
+      (e) => e === '--5'
     ]
   );
 });

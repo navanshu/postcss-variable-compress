@@ -65,23 +65,29 @@ module.exports = {
 }
 ```
 
-**Step 4:** Pass configuration to the plugin. It takes an array of css variables that you don't need to transform.
+## Api
 
-```diff
-module.export = {
+```javascript
+
+module.exports = {
   plugins: [
     require('cssnano'),
-+   require('postcss-variable-compress')([
-+       '--colorPrimary',
-+       '--colorPrimaryAlpha',
-+       '--light',
-+       '--dark',
-+       '--font',
-+       '--vh',
-+       '--r'
-+   ])
+    require('postcss-variable-compress')(
+      // pass in css variables to avoid
+      'colorPrimary', 'colorPrimaryAlpha', 'light', 'dark', 'font', 'vh', 'r'
+      // or pass in as many function as your want
+      // they take single param which is a the name of css variable
+      // you can do checks on it and
+      // return true if you want it to be skipped
+      // for example
+      (name) => name.includes('skip')
+      // avoid regex if you can they are bad
+    )
   ]
 }
+
 ```
+
+
 
 [official docs]: https://github.com/postcss/postcss#usage
