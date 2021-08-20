@@ -80,7 +80,7 @@ module.exports = {
       // you can do checks on it and
       // return true if you want it to be skipped
       // for example
-      (name) => name.includes('skip')
+      (name) => name.includes('skip') // name is a raw css variable i.e. it includes "--" example --height
       // avoid regex if you can they are bad
     )
   ]
