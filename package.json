@@ -24,7 +24,7 @@
     "postcss": "^8.2.8"
   },
   "devDependencies": {
-    "clean-publish": "^2.1.0",
+    "clean-publish": "^3.4.2",
     "eslint": "^7.21.0",
     "eslint-plugin-jest": "^24.2.1",
     "jest": "^27.3.1",
