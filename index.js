@@ -74,8 +74,17 @@ module.exports = function variableCompress(opts) {
     cssVariablesMap = new Map();
     opts.forEach(E => {
         if (typeof E === 'string') {
-            pureSkips.push(E.replace('--', ''));
-            cssVariablesMap.set(E, E);
+            let name = E;
+            let cssName = E;
+            if (E.slice(0, 2) === '--') {
+                name = E.slice(2);
+                cssName = E;
+            }
+            else {
+                cssName = '--' + E;
+            }
+            pureSkips.push(name);
+            cssVariablesMap.set(cssName, cssName);
         }
         else
             scriptBasedSkips.push(E);
