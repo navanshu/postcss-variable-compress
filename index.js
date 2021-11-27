@@ -78,7 +78,6 @@ module.exports = function variableCompress(opts) {
             let cssName = E;
             if (E.slice(0, 2) === '--') {
                 name = E.slice(2);
-                cssName = E;
             }
             else {
                 cssName = '--' + E;

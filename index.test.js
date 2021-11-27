@@ -81,7 +81,7 @@ code {
 }`,
     [
       '--primary-color',
-      '--2',
+      '2',
       (e) => e.includes('special'),
       (e) => e === '--5'
     ]

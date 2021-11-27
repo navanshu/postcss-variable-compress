@@ -1,5 +1,9 @@
 # Change Log
 
+# V0.2.1
+
+- Coverage 100%.
+
 # v0.2.0
 
 - Same api can be passed with function so you can check if a variable has to be ignored
