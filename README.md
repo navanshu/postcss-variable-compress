@@ -1,4 +1,4 @@
-# PostCSS Variable Compress
+# PostCSS Variable Compress ![npm](https://img.shields.io/npm/dy/postcss-variable-compress) ![GitHub branch checks state](https://img.shields.io/github/checks-status/navanshu/postcss-variable-compress/master)
 
 [postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. Even if you have 1295 css variables still they will not exceed by two characters. It will transform css variable without breaking your stylesheet.
 
