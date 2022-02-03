@@ -1,5 +1,10 @@
 # Change Log
 
+# V0.2.6
+
+- Updating issues
+- Update postcss
+
 # V0.2.5
 
 - Coverage 100%.
