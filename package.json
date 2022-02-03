@@ -1,6 +1,6 @@
 {
   "name": "postcss-variable-compress",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "PostCSS plugin cleans up the variable names and saves space. It can will reduce your css variable to smaller variables",
   "keywords": [
     "postcss",
