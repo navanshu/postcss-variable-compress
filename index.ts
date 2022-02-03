@@ -94,7 +94,7 @@ function map(j: import('postcss').Declaration) {
 }
 
 
-module.exports = function variableCompress(opts: variableCompress.parameters[]) {
+module.exports = function variableCompress(opts?: variableCompress.parameters[]) {
 
   processed = Symbol('processed');
 
@@ -104,7 +104,7 @@ module.exports = function variableCompress(opts: variableCompress.parameters[]) 
   scriptBasedSkips = [];
   cssVariablesMap = new Map();
 
-  opts.forEach(E => {
+  opts?.forEach(E => {
     if (typeof E === 'string') {
 
       let name = E;

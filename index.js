@@ -72,7 +72,7 @@ module.exports = function variableCompress(opts) {
     pureSkips = [];
     scriptBasedSkips = [];
     cssVariablesMap = new Map();
-    opts.forEach(E => {
+    opts === null || opts === void 0 ? void 0 : opts.forEach(E => {
         if (typeof E === 'string') {
             let name = E;
             let cssName = E;
