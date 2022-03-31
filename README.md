@@ -6,6 +6,9 @@ If you want it not modify some css variables, then pass them `--{variable-name}`
 
 [postcss]: https://github.com/postcss/postcss
 [postcss-variable-compress]: https://github.com/navanshu/postcss-variable-compress
+[vitecss-variable-compress]: https://github.com/Febnik/vitecss-variable-compress
+
+If you are looking for a plugin that can work on seprate files go to [vitecss-variable-compress]
 
 ```css
 :root {
