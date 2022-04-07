@@ -1,10 +1,9 @@
 export namespace variableCompress {
-
   export type skip = (variableName: string) => boolean | undefined;
-
-  export type parameters = skip | string;
-
+  export type map = { [key: string]: string };
+  export type parameters = skip | map | string;
 }
+
 const postcssPlugin = 'postcss-variable-compress';
 
 let processed = Symbol('processed');
@@ -12,7 +11,7 @@ let renamedVariables: string[] = [];
 let cssVariables = -1;
 let pureSkips: string[] = [];
 let scriptBasedSkips: variableCompress.skip[] = [];
-let cssVariablesMap = new Map();
+let cssVariablesMap = new Map<string, string>();
 
 function scriptCheck(val: string) {
 
@@ -105,22 +104,33 @@ module.exports = function variableCompress(opts?: variableCompress.parameters[])
   cssVariablesMap = new Map();
 
   opts?.forEach(E => {
-    if (typeof E === 'string') {
+    switch (typeof E) {
+      case 'string':
 
-      let name = E;
-      let cssName = E;
+        const name = E.startsWith('--')
+          ? E.slice(2)
+          : E;
 
-      if (E.slice(0, 2) === '--') {
-        name = E.slice(2);
-      } else {
-        cssName = '--' + E;
-      }
+        const cssName = E.startsWith('--')
+          ? E
+          : `--${E}`;
 
-      pureSkips.push(name);
-      cssVariablesMap.set(cssName, cssName);
+        pureSkips.push(name);
+        cssVariablesMap.set(cssName, cssName);
+        break;
+
+      case 'object':
+        Object.entries(E)
+          .forEach(([key, value]) => {
+            renamedVariables.push(value);
+            cssVariablesMap.set(key, value);
+          });
+        break;
+      default:
+        scriptBasedSkips.push(E);
+        break;
     }
-    else
-      scriptBasedSkips.push(E);
+
   });
 
   increase();

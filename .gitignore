@@ -8,3 +8,4 @@ coverage/
 .npm
 
 .DS_Store
+.idea

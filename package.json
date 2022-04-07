@@ -54,7 +54,8 @@
       "plugin:jest/recommended"
     ],
     "rules": {
-      "jest/expect-expect": "off"
+      "jest/expect-expect": "off",
+      "no-case-declarations": "off"
     }
   },
   "jest": {

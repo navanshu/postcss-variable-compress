@@ -87,6 +87,12 @@ module.exports = {
       // for example
       (name) => name.includes('skip') // name prefixed css variable example --height
       // avoid regex if you can they are bad
+      // To compress varaiables to a known ma you can pass in a known object to map against
+      // for example
+      {
+        '--height': '--h',
+        '--font': '--f'
+      }
     )
   ]
 }

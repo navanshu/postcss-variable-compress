@@ -73,20 +73,28 @@ module.exports = function variableCompress(opts) {
     scriptBasedSkips = [];
     cssVariablesMap = new Map();
     opts === null || opts === void 0 ? void 0 : opts.forEach(E => {
-        if (typeof E === 'string') {
-            let name = E;
-            let cssName = E;
-            if (E.slice(0, 2) === '--') {
-                name = E.slice(2);
-            }
-            else {
-                cssName = '--' + E;
-            }
-            pureSkips.push(name);
-            cssVariablesMap.set(cssName, cssName);
+        switch (typeof E) {
+            case 'string':
+                const name = E.startsWith('--')
+                    ? E.slice(2)
+                    : E;
+                const cssName = E.startsWith('--')
+                    ? E
+                    : `--${E}`;
+                pureSkips.push(name);
+                cssVariablesMap.set(cssName, cssName);
+                break;
+            case 'object':
+                Object.entries(E)
+                    .forEach(([key, value]) => {
+                    renamedVariables.push(value);
+                    cssVariablesMap.set(key, value);
+                });
+                break;
+            default:
+                scriptBasedSkips.push(E);
+                break;
         }
-        else
-            scriptBasedSkips.push(E);
     });
     increase();
     return {
