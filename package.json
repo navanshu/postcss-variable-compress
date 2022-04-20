@@ -8,7 +8,10 @@
     "postcss-plugin",
     "minify",
     "compress",
-    "cssnano"
+    "cssnano",
+    "css-variables",
+    "clean-css",
+    "shrik-css"
   ],
   "scripts": {
     "test": "jest --coverage && eslint .",
