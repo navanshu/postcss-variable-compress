@@ -1,11 +1,12 @@
 # PostCSS Variable Compress ![npm](https://img.shields.io/npm/dy/postcss-variable-compress) ![GitHub branch checks state](https://img.shields.io/github/checks-status/navanshu/postcss-variable-compress/master)
 
-[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. Even if you have 1295 css variables still they will not exceed by two characters. It will transform css variable without breaking your stylesheet.
+[postcss-variable-compress] is a [PostCSS] plugin minifies variable names and saves space. Even if you have 1295 css variables still they will not exceed by two characters. It will transform css variable without breaking your stylesheet. Get if from [NPM].
 
 If you want it not modify some css variables, then pass them `--{variable-name}` as an array to the plugin.
 
 [postcss]: https://github.com/postcss/postcss
 [postcss-variable-compress]: https://github.com/navanshu/postcss-variable-compress
+[npm]: https://www.npmjs.com/package/postcss-variable-compress
 
 ### If you are looking for a plugin that can work on separate files go to import splitFiles.js, works the same but it doesn't resets the variables.
 
