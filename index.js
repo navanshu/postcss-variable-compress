@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const postcssPlugin = 'postcss-variable-compress';
 let processed = Symbol('processed');
 let renamedVariables = [];
@@ -65,7 +64,7 @@ function map(j) {
     // @ts-ignore
     j[processed] = true;
 }
-module.exports = function variableCompress(opts) {
+function variableCompress(opts) {
     processed = Symbol('processed');
     renamedVariables = [];
     cssVariables = -1;
@@ -95,5 +94,6 @@ module.exports = function variableCompress(opts) {
             '*': map
         }
     };
-};
-module.exports.postcss = true;
+}
+variableCompress.postcss = true;
+module.exports = variableCompress;

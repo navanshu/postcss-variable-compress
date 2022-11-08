@@ -1,7 +1,6 @@
-export namespace variableCompressSplitFiles {
-  export type skip = (variableName: string) => boolean | undefined;
-  export type parameters = skip | string;
-}
+type Skip = (variableName: string) => boolean | undefined;
+
+type Parameters = Skip | string;
 
 const postcssPlugin = 'postcss-variable-compress';
 
@@ -9,7 +8,7 @@ let processed = Symbol('processed');
 let renamedVariables: string[] = [];
 let cssVariables = -1;
 let pureSkips: string[] = [];
-let scriptBasedSkips: variableCompressSplitFiles.skip[] = [];
+let scriptBasedSkips: Skip[] = [];
 let cssVariablesMap = new Map();
 
 function scriptCheck(val: string) {
@@ -92,7 +91,7 @@ function map(j: import('postcss').Declaration) {
 }
 
 
-module.exports = function variableCompressSplitFiles(opts?: variableCompressSplitFiles.parameters[]) {
+function variableCompressSplitFiles(opts?: Parameters[]) {
 
   processed = Symbol('processed');
 
@@ -123,6 +122,7 @@ module.exports = function variableCompressSplitFiles(opts?: variableCompressSpli
       '*': map
     }
   };
-};
+}
 
-module.exports.postcss = true;
+export = variableCompressSplitFiles;
+variableCompressSplitFiles.postcss = true;
