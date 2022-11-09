@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.variableCompressSplitFiles = void 0;
 const postcssPlugin = "postcss-variable-compress";
 let processed = Symbol("processed");
 let renamedVariables = [];
@@ -92,6 +91,6 @@ function variableCompressSplitFiles(opts) {
         },
     };
 }
-exports.variableCompressSplitFiles = variableCompressSplitFiles;
 module.exports = variableCompressSplitFiles;
 module.exports.postcss = true;
+exports.default = variableCompressSplitFiles;

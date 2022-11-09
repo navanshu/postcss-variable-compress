@@ -83,7 +83,7 @@ function map(j: import("postcss").Declaration) {
   j[processed] = true;
 }
 
-export function variableCompressSplitFiles(
+function variableCompressSplitFiles(
   opts?: variableCompressSplitFiles.parameters[]
 ) {
   processed = Symbol("processed");
@@ -116,3 +116,4 @@ export function variableCompressSplitFiles(
 
 module.exports = variableCompressSplitFiles;
 module.exports.postcss = true;
+export default variableCompressSplitFiles;

@@ -83,7 +83,7 @@ function map(j: import("postcss").Declaration) {
   j[processed] = true;
 }
 
-export function variableCompress(opts?: variableCompress.parameters[]) {
+function variableCompress(opts?: variableCompress.parameters[]) {
   processed = Symbol("processed");
 
   renamedVariables = [];
@@ -120,3 +120,4 @@ export function variableCompress(opts?: variableCompress.parameters[]) {
 
 module.exports = variableCompress;
 module.exports.postcss = true;
+export default variableCompress;

@@ -3,10 +3,10 @@ export declare namespace variableCompress {
     type parameters = skip | string;
 }
 declare function map(j: import("postcss").Declaration): void;
-export declare function variableCompress(opts?: variableCompress.parameters[]): {
+declare function variableCompress(opts?: variableCompress.parameters[]): {
     postcssPlugin: string;
     Declaration: {
         "*": typeof map;
     };
 };
-export {};
+export default variableCompress;
