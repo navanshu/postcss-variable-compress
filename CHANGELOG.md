@@ -1,5 +1,9 @@
 # Change Log
 
+# V2.0.0
+
+- Exposed the function fixing problems with typescript in regards to [Pull Request by Kaciras](https://github.com/navanshu/postcss-variable-compress/pull/38)
+
 # V0.2.6
 
 - Updating issues
