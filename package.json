@@ -12,7 +12,8 @@
     "css-variables",
     "clean-css",
     "shrik-css",
-    "vite"
+    "vite",
+    "nextjs"
   ],
   "scripts": {
     "test": "jest --coverage && eslint .",
