@@ -29,7 +29,7 @@
     "postcss": "^8.2.8"
   },
   "devDependencies": {
-    "@types/jest": "^29.0.1",
+    "@types/jest": "^29.5.1",
     "@types/mocha": "^9.1.0",
     "clean-publish": "^4.0.0",
     "eslint": "^8.0.1",
