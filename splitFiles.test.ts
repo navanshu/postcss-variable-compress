@@ -1,8 +1,7 @@
-const postcss = require('postcss');
+import postcss, { Root } from 'postcss';
+import variableCompress, { variableCompressParameters } from './splitFiles';
 
-const variableCompress = require('./splitFiles');
-
-async function run (input, output, opts) {
+async function run (input: string | { toString(): string; } | Root, output: string, opts?: variableCompressParameters[] | (string | ((e: any) => any))[] | undefined) {
   let result = await postcss(
     [variableCompress(opts)]
   ).process(input, { from: undefined });
@@ -82,8 +81,8 @@ code {
     [
       '--primary-color',
       '2',
-      (e) => e.includes('special'),
-      (e) => e === '--5'
+      (e: string | string[]) => e.includes('special'),
+      (e: string) => e === '--5'
     ]
   );
 });

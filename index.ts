@@ -1,15 +1,13 @@
-export namespace variableCompress {
-  export type skip = (variableName: string) => boolean | undefined;
+export type skipFunction = (variableName: string) => boolean | undefined;
+export type variableCompressParameters = skipFunction | string;
 
-  export type parameters = skip | string;
-}
 const postcssPlugin = "postcss-variable-compress";
 
 let processed = Symbol("processed");
 let renamedVariables: string[] = [];
 let cssVariables = -1;
 let pureSkips: string[] = [];
-let scriptBasedSkips: variableCompress.skip[] = [];
+let scriptBasedSkips: skipFunction[] = [];
 let cssVariablesMap = new Map();
 
 function scriptCheck(val: string) {
@@ -83,7 +81,7 @@ function map(j: import("postcss").Declaration) {
   j[processed] = true;
 }
 
-function variableCompress(opts?: variableCompress.parameters[]) {
+function variableCompress(opts?: variableCompressParameters[]) {
   processed = Symbol("processed");
 
   renamedVariables = [];

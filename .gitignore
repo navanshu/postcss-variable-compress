@@ -9,3 +9,6 @@ coverage/
 
 .DS_Store
 item.ts
+
+*.js
+*.d.ts

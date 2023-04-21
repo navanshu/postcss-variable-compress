@@ -1,19 +1,23 @@
-const postcss = require('postcss');
+import postcss, { Root } from "postcss";
+import variableCompress, { variableCompressParameters } from "./index";
 
-const variableCompress = require('./index');
-
-async function run (input, output, opts) {
-  let result = await postcss(
-    [variableCompress(opts)]
-  ).process(input, { from: undefined });
+async function run(
+  input: string | { toString(): string } | Root,
+  output: string,
+  opts?:
+    | variableCompressParameters[]
+    | (string | ((e: any) => any))[]
+    | undefined
+) {
+  let result = await postcss([variableCompress(opts)]).process(input, {
+    from: undefined,
+  });
 
   expect(result.css).toEqual(output);
   expect(result.warnings()).toHaveLength(0);
-
 }
 
-
-it('Shorten css variables', async () => {
+it("Shorten css variables", async () => {
   await run(
     `:root {
 --first-color: #16f;
@@ -80,20 +84,27 @@ code {
   --5: #555;
 }`,
     [
-      '--primary-color',
-      '2',
-      (e) => e.includes('special'),
-      (e) => e === '--5'
+      "--primary-color",
+      "2",
+      (e: string | string[]) => e.includes("special"),
+      (e: string) => e === "--5",
     ]
   );
 });
 
-it('Support reloading. Now the plugin will reset mapped variables', async () => {
-  await run(`:root{--first-color: #16f;--second-color: #ff7;}`, `:root{--0: #16f;--1: #ff7;}`, []);
-  await run(`:root{--second-color: #ff7;--first-color: #16f;}`, `:root{--0: #ff7;--1: #16f;}`, []);
+it("Support reloading. Now the plugin will reset mapped variables", async () => {
+  await run(
+    `:root{--first-color: #16f;--second-color: #ff7;}`,
+    `:root{--0: #16f;--1: #ff7;}`,
+    []
+  );
+  await run(
+    `:root{--second-color: #ff7;--first-color: #16f;}`,
+    `:root{--0: #ff7;--1: #16f;}`,
+    []
+  );
 });
 
-
-it('Base array check or no array', async () => {
-  await run(`:root{}`, `:root{}`);
+it("Base array check or no array", async () => {
+  run(`:root{}`, `:root{}`);
 });
