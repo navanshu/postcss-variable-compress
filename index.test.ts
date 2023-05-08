@@ -27,6 +27,7 @@ it("Shorten css variables", async () => {
 
 #firstParagraph {
   background-color: var(--first-color);
+  border-color: var( --second-color);
   color: var(--second-color);
 }
 
@@ -59,6 +60,7 @@ code {
 
 #firstParagraph {
   background-color: var(--0);
+  border-color: var( --1);
   color: var(--1);
 }
 

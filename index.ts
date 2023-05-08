@@ -72,7 +72,7 @@ function map(j: import("postcss").Declaration) {
   }
 
   let value = j.value;
-  if (value && value.includes("var(--") && value.length <= 1000) {
+  if (value && value.match(/var\(\s*--/) && value.length <= 1000) {
     value = value.replace(/--[\w-_]{1,1000}/g, replacer);
     j.value = value;
   }
