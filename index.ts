@@ -1,51 +1,39 @@
-export type skipFunction = (variableName: string) => boolean | undefined;
-export type variableCompressParameters = skipFunction | string;
+import { SkipFunction, VariableCompressParameters, BuildHistory } from './types'
+export * from './types'
+import fs from "fs";
+import path from "path";
 
 const postcssPlugin = "postcss-variable-compress";
+const buildHistoryFileName = "postcssVariableCompress.json";
 
-let processed = Symbol("processed");
 let renamedVariables: string[] = [];
 let cssVariables = -1;
 let pureSkips: string[] = [];
-let scriptBasedSkips: skipFunction[] = [];
-let cssVariablesMap = new Map();
+let functionBasedSkips: SkipFunction[] = [];
+let cssVariablesMap = new Map<string, string>();
 
-function scriptCheck(val: string) {
-  const should = scriptBasedSkips.findIndex((E) => E(val));
-  return should > -1;
+function scriptCheck(val: string): boolean {
+  return functionBasedSkips.some((skipFunc) => skipFunc(val));
 }
 
-function shouldRun(val: string) {
-  let should = true;
-
-  if (renamedVariables.indexOf(val) > -1) {
-    should = false;
-  }
-
-  if (should && scriptCheck(val)) {
-    should = false;
-  }
-
-  return should;
+function shouldRun(val: string): boolean {
+  return !renamedVariables.includes(val) && !scriptCheck(val);
 }
 
-function increase() {
-  cssVariables = cssVariables + 1;
-
+function increase(): void {
+  cssVariables++;
   let temp = cssVariables.toString(36);
 
-  pureSkips.forEach((E) => {
-    if (E === temp) {
-      temp = cssVariables.toString(36);
-      cssVariables = cssVariables + 1;
-    }
-  });
+  while (pureSkips.includes(temp)) {
+    cssVariables++;
+    temp = cssVariables.toString(36);
+  }
 }
 
-function replacer(match: string) {
+function replacer(match: string): string {
   if (!shouldRun(match)) return match;
-  let exist = cssVariablesMap.get(match);
 
+  let exist = cssVariablesMap.get(match);
   if (!exist) {
     exist = "--" + cssVariables.toString(36);
     increase();
@@ -56,10 +44,10 @@ function replacer(match: string) {
   return exist;
 }
 
-function map(j: import("postcss").Declaration) {
-  let prop = j.prop;
-  if (prop && j.variable && shouldRun(prop)) {
-    let old = prop;
+function map(declaration: import("postcss").Declaration): void {
+  const prop = declaration.prop;
+  if (prop && declaration.variable && shouldRun(prop)) {
+    const old = prop;
     let exist = cssVariablesMap.get(old);
     if (!exist) {
       exist = "--" + cssVariables.toString(36);
@@ -67,43 +55,107 @@ function map(j: import("postcss").Declaration) {
       cssVariablesMap.set(old, exist);
       renamedVariables.push(exist);
     }
-    prop = exist;
-    j.prop = prop;
+    declaration.prop = exist;
   }
 
-  let value = j.value;
-  if (value && value.includes("var(--") && value.length <= 1000) {
+  let value = declaration.value;
+  if (value && value.includes("var(") && value.includes('--') && value.length <= 1000) {
     value = value.replace(/--[\w-_]{1,1000}/g, replacer);
-    j.value = value;
+    declaration.value = value;
   }
 
   // @ts-ignore
-  j[processed] = true;
+  declaration.processed = true;
 }
 
-function variableCompress(opts?: variableCompressParameters[]) {
-  processed = Symbol("processed");
+function loadBuildHistory(historyPath: string): void {
+  try {
+    let stats = fs.statSync(historyPath);
+    if (stats.isDirectory()) {
+      historyPath = path.join(historyPath, buildHistoryFileName);
+    }
 
-  renamedVariables = [];
-  cssVariables = -1;
-  pureSkips = [];
-  scriptBasedSkips = [];
-  cssVariablesMap = new Map();
+    try {
+      stats = fs.statSync(historyPath);
 
-  opts?.forEach((E) => {
-    if (typeof E === "string") {
-      let name = E;
-      let cssName = E;
+      const fileData = fs.readFileSync(historyPath, "utf8");
+      const buildHistory: BuildHistory = JSON.parse(fileData);
 
-      if (E.slice(0, 2) === "--") {
-        name = E.slice(2);
+      buildHistory.variables
+        .filter(item => Boolean(Array.isArray(item) && item.length === 2))
+        .forEach(([a, b]) => {
+          cssVariablesMap.set(a, b);
+        })
+
+    } catch (error) {
+      fs.writeFileSync(historyPath, JSON.stringify({
+        variables: []
+      }, null, 2), 'utf8');
+    }
+
+  } catch (error) {
+    console.error("Failed to load build history:", error);
+  }
+}
+async function saveBuildHistory(historyPath: string): Promise<void> {
+  try {
+    const stats = await fs.promises.stat(historyPath);
+    if (stats.isDirectory()) {
+      historyPath = path.join(historyPath, buildHistoryFileName);
+    }
+
+    const buildHistory: BuildHistory = {
+      variables: [...cssVariablesMap.entries()],
+    };
+    const jsonData = JSON.stringify(buildHistory, null, 2);
+
+    await fs.promises.writeFile(historyPath, jsonData, "utf8");
+  } catch (error) {
+    console.error("Failed to save build history:", error);
+  }
+}
+
+
+/**
+ * 
+ * @param preserveVariables Provides facility to preserver the variables from being changed 
+ * @param history When true is provided changes are kept same in the build
+ * @param history When a path is provided Keeps the list of variables same accross build at the cost of storing variables in a file 
+ * @returns 
+ */
+function variableCompress(
+  preserveVariables?: VariableCompressParameters[],
+  history?: string | boolean
+): any {
+
+  if (!(history === true || typeof history === 'string')) {
+    renamedVariables = [];
+    cssVariables = -1;
+    pureSkips = [];
+    functionBasedSkips = [];
+    cssVariablesMap.clear();
+  }
+  
+  if (typeof history === 'string') {
+    loadBuildHistory(history);
+  }
+
+  preserveVariables?.forEach((param) => {
+    if (typeof param === "string") {
+      let name = param;
+      let cssName = param;
+
+      if (param.slice(0, 2) === "--") {
+        name = param.slice(2);
       } else {
-        cssName = "--" + E;
+        cssName = "--" + param;
       }
 
       pureSkips.push(name);
       cssVariablesMap.set(cssName, cssName);
-    } else scriptBasedSkips.push(E);
+    } else {
+      functionBasedSkips.push(param);
+    }
   });
 
   increase();
@@ -112,6 +164,12 @@ function variableCompress(opts?: variableCompressParameters[]) {
     postcssPlugin,
     Declaration: {
       "*": map,
+    },
+    async OnceExit() {
+      if (typeof history === 'string') {
+        await saveBuildHistory(history);
+      }
+      return true
     },
   };
 }

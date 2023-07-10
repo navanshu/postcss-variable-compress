@@ -12,3 +12,5 @@ item.ts
 
 *.js
 *.d.ts
+
+build-history-folder*

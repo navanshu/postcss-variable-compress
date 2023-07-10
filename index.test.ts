@@ -1,15 +1,13 @@
 import postcss, { Root } from "postcss";
-import variableCompress, { variableCompressParameters } from "./index";
+import variableCompress, { VariableCompressParameters } from "./index";
 
 async function run(
   input: string | { toString(): string } | Root,
   output: string,
-  opts?:
-    | variableCompressParameters[]
-    | (string | ((e: any) => any))[]
-    | undefined
+  opts?: VariableCompressParameters[],
+  historyPath?: string
 ) {
-  let result = await postcss([variableCompress(opts)]).process(input, {
+  let result = await postcss([variableCompress(opts, historyPath)]).process(input, {
     from: undefined,
   });
 
@@ -96,15 +94,17 @@ it("Support reloading. Now the plugin will reset mapped variables", async () => 
   await run(
     `:root{--first-color: #16f;--second-color: #ff7;}`,
     `:root{--0: #16f;--1: #ff7;}`,
-    []
+    [],
+    "./build-history-folder"
   );
   await run(
     `:root{--second-color: #ff7;--first-color: #16f;}`,
-    `:root{--0: #ff7;--1: #16f;}`,
-    []
+    `:root{--1: #ff7;--0: #16f;}`,
+    [],
+    "./build-history-folder"
   );
 });
 
 it("Base array check or no array", async () => {
-  run(`:root{}`, `:root{}`);
+  await run(`:root{}`, `:root{}`);
 });
