@@ -14,8 +14,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true    
   },
-  "files": [
-    "./index.ts",
-    "./splitFiles.ts"
+  "include": [
+    "./"
   ]
 }
